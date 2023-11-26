@@ -48,6 +48,7 @@ export const restaurant = {
         },
         {
           id: 4,
+          // eslint-disable-next-line quotes
           name: `Livin' your best life 😎`,
           price: 80,
           info: 'Includes two garlic breads with or without cheese, four pizzas, two bottles of wine or eight bottles of beer or a mix of both',
@@ -138,6 +139,7 @@ export const restaurant = {
         },
         {
           id: 4,
+          // eslint-disable-next-line quotes
           name: "Livin' your best life 😎",
           price: 80,
           info: 'Includes two garlic breads with or without cheese, four pizzas, two bottles of wine or eight bottles of beer or a mix of both',
