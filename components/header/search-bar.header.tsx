@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import SearchInput from '@/components/header/text-input.search-bar'
-import IconButton from '@/components/icon-button'
+import IconButton from '@/components/header/icon-button'
 
 const SearchBar = () => {
   const handleOptionsPress = () => {

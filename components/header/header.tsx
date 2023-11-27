@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {
   Platform,
   SafeAreaView,
@@ -9,15 +9,15 @@ import {
 import Logo from '@/components/header/logo.header'
 import Title from '@/components/header/title.header'
 import SearchBar from '@/components/header/search-bar.header'
-import IconButton from '@/components/icon-button'
+import IconButton from '@/components/header/icon-button'
 import colors from '@/constants/Colors'
+import BottomSheet from '@/components/bottom-sheet/bottom-sheet'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 
 const Header = () => {
-  const handleLogoClick = () => {
-    console.log('logo clicked')
-  }
-  const handleTitleClick = () => {
-    console.log('Title pressed')
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
+  const handleOpenBottomSheet = () => {
+    bottomSheetRef.current?.present()
   }
   const handleUserProfileClick = () => {
     console.log('Title pressed')
@@ -25,9 +25,10 @@ const Header = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <BottomSheet ref={bottomSheetRef} />
       <View style={styles.container}>
-        <Logo onPress={handleLogoClick} />
-        <Title onPress={handleTitleClick} />
+        <Logo onPress={handleOpenBottomSheet} />
+        <Title onPress={handleOpenBottomSheet} />
         <IconButton
           onPress={handleUserProfileClick}
           iconName={'person-outline'}
