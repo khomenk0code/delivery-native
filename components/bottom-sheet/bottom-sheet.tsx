@@ -1,24 +1,37 @@
-import React, { forwardRef, RefAttributes, useCallback, useMemo } from 'react'
+import React, { forwardRef, RefAttributes, useCallback, useMemo, useState } from 'react';
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
   useBottomSheetModal,
-} from '@gorhom/bottom-sheet'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types'
-import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types'
-import colors from '@/constants/Colors'
-import ToggleButton from '@/components/bottom-sheet/toggle-button'
+} from '@gorhom/bottom-sheet';
+import { StyleSheet, View } from 'react-native';
+import { BottomSheetBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import colors from '@/constants/Colors';
+import ToggleButton from '@/components/bottom-sheet/toggle-button.bottom-sheet';
+import InputButton from '@/components/bottom-sheet/input-button.bottom-sheet';
+import ConfirmButton from '@/components/bottom-sheet/confirm-button.bottom-sheet';
 
-export type Ref = BottomSheetModal
+type ToggleStates = 'Delivery' | 'Pickup';
+
+export type Ref = BottomSheetModal;
 
 interface propsBackdrop extends BottomSheetBackdropProps {}
 
 const BottomSheet: React.ForwardRefExoticComponent<
   RefAttributes<BottomSheetModalMethods>
 > = forwardRef<Ref>((props, ref) => {
-  const { dismiss } = useBottomSheetModal()
-  const snapPoints = useMemo(() => ['50%'], [])
+
+  const [activeButton, setActiveButton] = useState<ToggleStates>('Delivery');
+
+  const handleToggleButton = (buttonTitle: ToggleStates) => {
+    setActiveButton((prevActiveButton) =>
+      prevActiveButton === buttonTitle ? prevActiveButton : buttonTitle
+    );
+  };
+
+  const { dismiss } = useBottomSheetModal();
+  const snapPoints = useMemo(() => ['50%'], []);
 
   const renderBackdrop = useCallback(
     (props: propsBackdrop) => (
@@ -29,7 +42,7 @@ const BottomSheet: React.ForwardRefExoticComponent<
       />
     ),
     []
-  )
+  );
 
   return (
     <BottomSheetModal
@@ -41,19 +54,24 @@ const BottomSheet: React.ForwardRefExoticComponent<
     >
       <View style={styles.contentContainer}>
         <View style={styles.buttonsContainer}>
-          <ToggleButton buttonTitle={'Delivery'} />
-          <ToggleButton buttonTitle={'Pickup'} />
+          <ToggleButton
+            buttonTitle={'Delivery'}
+            isActive={activeButton === 'Delivery'}
+            onPress={() => handleToggleButton('Delivery')}
+          />
+          <ToggleButton
+            buttonTitle={'Pickup'}
+            isActive={activeButton === 'Pickup'}
+            onPress={() => handleToggleButton('Pickup')}
+          />
         </View>
-        <TouchableOpacity
-          style={styles.confirmButton}
-          onPress={() => dismiss()}
-        >
-          <Text style={styles.confirmButtonText}>Confirm</Text>
-        </TouchableOpacity>
+        <InputButton inputText={'Lviv'} iconName={'location-outline'} locationHeader={'Your location'}/>
+        <InputButton inputText={'Now'} iconName={'stopwatch-outline'} locationHeader={'Arrival time'}/>
+        <ConfirmButton onPress={() => dismiss()} />
       </View>
     </BottomSheetModal>
-  )
-})
+  );
+});
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -65,18 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 16,
   },
-  confirmButton: {
-    backgroundColor: colors.primary,
-    padding: 16,
-    margin: 16,
-    alignItems: 'center',
-    borderRadius: 4,
-  },
-  confirmButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-})
+});
 
-BottomSheet.displayName = 'BottomSheet'
-export default BottomSheet
+BottomSheet.displayName = 'BottomSheet';
+export default BottomSheet;
